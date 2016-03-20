@@ -11,6 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+    private MediaPlayer mediaPlayer;
+
+    public void playClick(View view){
+        getMediaPlayer().start();
+    }
+
+    public void pauseClick(View view){
+        getMediaPlayer().pause();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.laugh);
-        mediaPlayer.start();
     }
 
     @Override
@@ -52,5 +58,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        if (mediaPlayer == null){
+            mediaPlayer = MediaPlayer.create(this, R.raw.laugh);
+        }
+        return mediaPlayer;
+    }
+
+    public void setMediaPlayer(MediaPlayer mediaPlayer) {
+        this.mediaPlayer = mediaPlayer;
     }
 }
