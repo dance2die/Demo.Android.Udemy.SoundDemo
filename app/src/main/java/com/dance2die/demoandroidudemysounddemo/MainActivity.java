@@ -1,5 +1,6 @@
 package com.dance2die.demoandroidudemysounddemo;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.laugh);
+        mediaPlayer.start();
     }
 
     @Override
