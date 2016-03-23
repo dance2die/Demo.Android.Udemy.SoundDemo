@@ -14,6 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SeekBar;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private AudioManager audioManager;
@@ -53,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Log.i("SeekBar value", Integer.toString(progress));
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
             }
 
@@ -65,6 +67,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+            }
+        });
+
+
+        final SeekBar scrubber = (SeekBar) findViewById(R.id.scrubber);
+        scrubber.setMax(getMediaPlayer().getDuration());
+
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                scrubber.setProgress(getMediaPlayer().getCurrentPosition());
+            }
+        }, 0, 100);
+
+        scrubber.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.i("Scrubber value", Integer.toString(progress));
+                getMediaPlayer().seekTo(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+//                getMediaPlayer().pause();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+//                getMediaPlayer().start();
             }
         });
     }
