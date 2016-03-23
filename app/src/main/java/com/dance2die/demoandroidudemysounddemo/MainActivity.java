@@ -1,5 +1,7 @@
 package com.dance2die.demoandroidudemysounddemo;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +16,7 @@ import android.widget.SeekBar;
 
 public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
+    private AudioManager audioManager;
 
     public void playClick(View view){
         getMediaPlayer().start();
@@ -39,11 +42,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+
         SeekBar volumeControl = (SeekBar) findViewById(R.id.seekBar);
+        volumeControl.setMax(maxVolume);
+        volumeControl.setProgress(currentVolume);
+
         volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Log.i("SeekBar value", Integer.toString(progress));
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
             }
 
             @Override
